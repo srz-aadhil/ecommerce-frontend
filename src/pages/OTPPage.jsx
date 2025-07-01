@@ -14,7 +14,7 @@ export default function OTPPage() {
         body: JSON.stringify({code: parseInt(otp) }),
       });
 
-      if (!res.ok) throw new Error("Invalid or expired OTP");
+      if (!res.ok) throw new Error("Invalid or expired OTP code");
 
       alert("Verification successful. You can now log in.");
       localStorage.removeItem("phoneNo");
