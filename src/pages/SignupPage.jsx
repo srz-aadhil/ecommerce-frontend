@@ -42,7 +42,7 @@ const handleSignup = async (e) => {
     // 2️⃣ Store token & email in localStorage
     localStorage.setItem("token", data.token); // ✅ store JWT
     localStorage.setItem("userId", data.userId);
-    localStorage.setItem("phoneNo", data.phoneNo);
+    localStorage.setItem("phoneNo", formattedPhone);
 
     // 3️⃣ Send OTP request with token in Authorization header
     const otpRes = await fetch("http://localhost:9000/users/verifycode", {

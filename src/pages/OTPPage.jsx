@@ -2,22 +2,28 @@ import { useState } from "react";
 
 export default function OTPPage() {
   const [otp, setOtp] = useState("");
-  const phone = localStorage.getItem("phoneNo");
+  const token = localStorage.getItem("token");
+  const phone = localStorage.getItem("phoneNo")
 
   const handleSubmit = async (e) => {
+    alert("testing");
     e.preventDefault();
+    alert("testing 2");
 
     try {
       const res = await fetch("http://localhost:9000/users/verify", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json",
+                 "Authorization": `Bearer ${token}`,          
+        },
         body: JSON.stringify({code: parseInt(otp) }),
       });
 
+      console.log("temp");
       if (!res.ok) throw new Error("Invalid or expired OTP code");
 
       alert("Verification successful. You can now log in.");
-      localStorage.removeItem("phoneNo");
+      // localStorage.removeItem("phoneNo");
       // redirect logic here (navigate("/login"))
     } catch (err) {
       alert("Verification failed: " + err.message);
@@ -26,9 +32,11 @@ export default function OTPPage() {
 
   const handleResend = async () => {
     await fetch("http://localhost:9000/users/verifycode", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone }),
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
     });
     alert("New OTP sent.");
   };
