@@ -27,6 +27,8 @@ export default function LoginPage() {
       // 3️⃣ Success: store token & redirect
       alert('Login successful!');
       localStorage.setItem('token', data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       navigate('/'); // or navigate('/dashboard')
     } catch (err) {
       alert('Error: ' + err.message);
