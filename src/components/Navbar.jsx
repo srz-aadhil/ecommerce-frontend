@@ -1,22 +1,28 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const linkStyle = ({ isActive }) =>
+    isActive
+      ? "text-green-700 border-b-2 border-green-700 pb-1"
+      : "text-gray-700 hover:text-green-700";
+
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-green-800">
+        <NavLink to="/" className="text-2xl font-bold text-green-800">
           MalluMart
-        </Link>
+        </NavLink>
 
         <nav className="hidden md:flex space-x-6 font-medium text-gray-700">
-          <Link to="/">Home</Link>
-          <Link to="/shop">Shop</Link>
-          <Link to="/categories">Categories</Link>
-          <Link to="/cart">Cart</Link>
-          <Link to="/login">Login</Link>
+          <NavLink to="/" className={linkStyle}>Home</NavLink>
+          <NavLink to="/shop" className={linkStyle}>Shop</NavLink>
+          <NavLink to="/categories" className={linkStyle}>Categories</NavLink>
+          <NavLink to="/cart" className={linkStyle}>Cart</NavLink>
+          <NavLink to="/login" className={linkStyle}>Login</NavLink>
         </nav>
 
         {/* Mobile menu toggle */}
@@ -31,11 +37,11 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden px-4 pb-4">
           <nav className="flex flex-col space-y-2 font-medium text-gray-700">
-            <Link to="/">Home</Link>
-            <Link to="/shop">Shop</Link>
-            <Link to="/categories">Categories</Link>
-            <Link to="/cart">Cart</Link>
-            <Link to="/login">Login</Link>
+            <NavLink to="/" className={linkStyle}>Home</NavLink>
+            <NavLink to="/shop" className={linkStyle}>Shop</NavLink>
+            <NavLink to="/categories" className={linkStyle}>Categories</NavLink>
+            <NavLink to="/cart" className={linkStyle}>Cart</NavLink>
+            <NavLink to="/login" className={linkStyle}>Login</NavLink>
           </nav>
         </div>
       )}

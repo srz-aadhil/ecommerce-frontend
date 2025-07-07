@@ -1,13 +1,36 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // TODO: Connect with backend
-    console.log('Logging in with:', { email, password });
+
+    try {
+      // 1️⃣ Send login request
+      const res = await fetch('http://localhost:9000/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      // 2️⃣ Handle errors from server
+      if (!res.ok) {
+        throw new Error(data.message || data.error || 'Login failed');
+      }
+
+      // 3️⃣ Success: store token & redirect
+      alert('Login successful!');
+      localStorage.setItem('token', data.token);
+      navigate('/'); // or navigate('/dashboard')
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
   };
 
   return (
@@ -16,7 +39,7 @@ export default function LoginPage() {
         <h2 className="text-2xl font-bold text-center text-green-700 mb-6">Welcome Back</h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
-          {/* Email Field */}
+          {/* Email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
@@ -32,7 +55,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Password Field */}
+          {/* Password */}
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
@@ -48,7 +71,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Submit Button */}
+          {/* Button */}
           <button
             type="submit"
             className="w-full bg-green-600 text-white font-semibold py-2 rounded-md hover:bg-green-500 transition"
@@ -58,7 +81,10 @@ export default function LoginPage() {
         </form>
 
         <p className="text-sm text-center text-gray-600 mt-4">
-          Don't have an account? <a href="/signup" className="text-green-600 hover:underline">Sign up</a>
+          Don't have an account?{' '}
+          <a href="/signup" className="text-green-600 hover:underline">
+            Sign up
+          </a>
         </p>
       </div>
     </div>
